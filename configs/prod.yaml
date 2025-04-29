@@ -1,0 +1,29 @@
+rate_limiter:
+  default_interaval: 10
+  default_capacity: 10
+
+service:
+  host: localhost
+  port: 8080
+
+backends:
+  - host: backend-1
+    scheme: http
+    port: 8080
+  - host: backend-2
+    scheme: http
+    port: 8080
+
+load_balancer:
+  time_check: 10
+  endpoint_health_check: /check
+
+db:
+  host: "postgresql"
+  port: 5432
+  user: user
+  password: password
+  db_name: loadbalancer
+
+logger:
+  level: debug

@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  postgresql:
+      user: root
+      image: docker.io/bitnami/postgresql:17
+      ports:
+        - '5432:5432'
+      volumes:
+        - './data:/bitnami/postgresql'
+      environment:
+       - POSTGRESQL_USERNAME=user
+       - POSTGRESQL_PASSWORD=password
+       - POSTGRESQL_DATABASE=
+  backend-1:
+      image: backend:latest
+      container_name: backend-1
+      environment:
+        - COUNTER=1
+        - PORT=8080
+      ports:
+        - '8081:8080'
+  backend-2:
+      image: backend:latest
+      container_name: backend-2
+      environment:
+        - COUNTER=2
+        - PORT=8080
+      ports:
+        - '8082:8080'
+  loadbalancer:
+      image: loadbalancer:latest
+      environment:
+        - CONFIG_FILE=./configs/prod.yaml
+      ports:
+        - '8080:8080'
+      depends_on:
+        - postgresql
